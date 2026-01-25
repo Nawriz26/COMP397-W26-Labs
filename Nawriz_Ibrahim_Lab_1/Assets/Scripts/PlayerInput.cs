@@ -1,4 +1,5 @@
 using KBCore.Refs;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,9 +13,10 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float maxSpeed = 10.0f;
     [SerializeField] private float gravity = -30.0f;
     private Vector3 velocity;
-
-
+    [SerializeField] private float rotationSpeed = 4.0f;
+    [SerializeField] private float mouseSensY = 5.0f;
     [SerializeField, Self] private CharacterController controller;
+    [SerializeField, Child] private Camera cam;
 
     private void OnValidate()
     {
@@ -31,9 +33,19 @@ public class PlayerInput : MonoBehaviour
     {
         Vector2 readMove = move.ReadValue<Vector2>();
         Vector2 readLook = look.ReadValue<Vector2>();
+        // Movement of the player
         Vector3 movement = transform.right * readMove.x + transform.forward * readMove.y;
         controller.Move(movement * maxSpeed * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        // Rotation of the player
+        transform.Rotate(Vector3.up, readLook.x * rotationSpeed * Time.deltaTime);
+
+        // Rotation of the camera
+        mouseSensY = mouseSensY * readLook.y;
+        mouseSensY = Mathf.Clamp(mouseSensY, -90f, 90f);
+        cam.gameObject.transform.localRotation = Quaternion.Euler(mouseSensY, 0, 0);
+
     }
 }
