@@ -1,5 +1,7 @@
+using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -7,17 +9,17 @@ public class PlayerInput : MonoBehaviour
 {
     private InputAction move;
     private InputAction look;
-    [SerializeField] private CharacterController controller;
+    [SerializeField, Self] private CharacterController controller;
+
+    private void OnValidate()
+    {
+        this.ValidateRefs();
+    }
 
     void Start()
     {
         move = InputSystem.actions.FindAction("Player/Move");
         look = InputSystem.actions.FindAction("Player/Look");
-        controller = GetComponent<CharacterController>();
-        //if (controller == null)
-        //{
-        //    controller = gameObject.AddComponent<CharacterController>();
-        //}
     }
 
     void Update()
