@@ -7,12 +7,12 @@ public class PlayerInput : MonoBehaviour
     
     void Start()
     {
-        move = new InputSystem.actions.findAction("Player/Move");
+        move = new InputSystem.actions.FindAction("Player/Move");
     }
 
     void Update()
     {
-        Vector 2 readMove = move.ReadValue<Vector2>();
+        Vector2 readMove = move.ReadValue<Vector2>();
 
         Debug.Log("Player Move Input: " + readMove);
     }
