@@ -33,5 +33,7 @@ public class PlayerInput : MonoBehaviour
         Vector2 readLook = look.ReadValue<Vector2>();
         Vector3 movement = transform.right * readMove.x + transform.forward * readMove.y;
         controller.Move(movement * maxSpeed * Time.deltaTime);
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 }
