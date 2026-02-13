@@ -52,4 +52,11 @@ public class PlayerInput : MonoBehaviour
         cam.gameObject.transform.localRotation = Quaternion.Euler(camXRotation, 0, 0);
 
     }
+
+    public void ChangeMouseSensibility(float value)
+    {
+        Debug.Log("Changing mouse sensibility to " + value);
+        mouseSensY = value;
+        rotationSpeed = value;
+    }
 }
