@@ -9,11 +9,11 @@ using System.Linq;
 public class NPCMovement : MonoBehaviour
 {
     [SerializeField, Self] private NavMeshAgent agent;
-    [SerializeField] private  List<GameObject> waypoints = new List<GameObject>();
+    [SerializeField] private List<GameObject> waypoints = new List<GameObject>();
     private Vector3 destination;
     private int index;
 
-    void OnValidate() => this.ValidateRefs();
+    private void OnValidate() => this.ValidateRefs();
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class NPCMovement : MonoBehaviour
         agent.destination = destination = waypoints[index].transform.position;
     }
 
-   
+
     void Update()
     {
         if (waypoints.Count < 0) return;
@@ -33,5 +33,22 @@ public class NPCMovement : MonoBehaviour
             agent.destination = destination;
         }
 
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            destination = other.transform.position;
+            agent.destination = destination;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        { 
+            destination = waypoints[index].transform.position;
+            agent.destination = destination;
+        } 
     }
 }
