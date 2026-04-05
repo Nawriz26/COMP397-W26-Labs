@@ -547,6 +547,7 @@ MonoBehaviour:
   gravity: -30
   rotationSpeed: 15
   mouseSensY: 15
+  mobileScale: 10
   controller: {fileID: 3804445618684597379}
   cam: {fileID: 7491340196711661048}
   audioController: {fileID: 0}
