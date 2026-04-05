@@ -28,4 +28,12 @@ public class PlayerShooter : MonoBehaviour
         Destroy(projectile, 1.5f);
     }
 
+    //private void ShootPoolBullet(InputAction.CallbackContext context)
+    //{
+    //    Bullet bullet = BulletObjectPool.Instance.Get();
+    //    bullet.transform.SetPositionAndRotation(projectileSpawn.position, projectileSpawn.rotation);
+    //    bullet.gameObject.SetActive(true);
+    //    bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * projectileForce, ForceMode.Impulse);
+    //}
+
 }
