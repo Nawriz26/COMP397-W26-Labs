@@ -11,6 +11,8 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
 
+    public static object Instance { get; internal set; }
+
     private IEnumerator Start()
     {
         Debug.Log("AudioController Start called");

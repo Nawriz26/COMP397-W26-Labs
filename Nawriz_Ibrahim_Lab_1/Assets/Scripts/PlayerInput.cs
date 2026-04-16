@@ -1,11 +1,9 @@
 using KBCore.Refs;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 [RequireComponent(typeof(CharacterController))]
-
 public class PlayerInput : MonoBehaviour
 {
     private InputAction move;
@@ -20,8 +18,6 @@ public class PlayerInput : MonoBehaviour
     private float camXRotation;
     [SerializeField, Self] private CharacterController controller;
     [SerializeField, Child] private Camera cam;
-    [SerializeField, Scene] private AudioController audioController;
-
     private void OnValidate()
     {
         this.ValidateRefs();
@@ -41,18 +37,18 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable()
     {
         jump.started -= Jump;
-
     }
 
     private void Jump(InputAction.CallbackContext context)
     {
-       audioController.PlayJumpSFX();
+        ((AudioController)AudioController.Instance)?.PlayJumpSFX();
+        EventChannelManager.Instance.voidEvent.RaiseEvent();
     }
 
     void Update()
     {
         Vector2 readMove = move.ReadValue<Vector2>();
-        Vector2 readLook = look.ReadValue<Vector2>();
+        Vector2 readLook = look.ReadValue<Vector2>();// (0,0)
         // Movement of the player
         Vector3 movement = transform.right * readMove.x + transform.forward * readMove.y;
         velocity.y += gravity * Time.deltaTime;
@@ -60,9 +56,6 @@ public class PlayerInput : MonoBehaviour
         movement += velocity;
         controller.Move(movement);
 
-
-
-        // Rotation of the camera
 #if UNITY_ANDROID
         transform.Rotate(Vector3.up, readLook.x * rotationSpeed * mobileScale * Time.deltaTime);
         camXRotation += mouseSensY * readLook.y * Time.deltaTime * rotationSpeed * -1;
@@ -73,13 +66,12 @@ public class PlayerInput : MonoBehaviour
 
         camXRotation = Mathf.Clamp(camXRotation, -80f, 50f);
         cam.gameObject.transform.localRotation = Quaternion.Euler(camXRotation, 0, 0);
-
     }
 
-    public void ChangeMouseSensibility(float value)
-    {
-        Debug.Log("Changing mouse sensibility to " + value);
-        mouseSensY = value;
-        rotationSpeed = value;
-    }
+	public void ChangeMouseSensibility(float value)
+	{
+		Debug.Log($"Value changed - {value}");
+		mouseSensY = value;
+		rotationSpeed = value;
+	}
 }
